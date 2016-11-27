@@ -21,7 +21,7 @@ TreeStructureElement::TreeStructureElement(FTransform value, int directionId, in
 	ElementId = elementId;
 }
 
-TreeStructureElement::TreeStructureElement(FTransform value, TreeStructureElement *parent)
+TreeStructureElement::TreeStructureElement(FTransform value, TreeStructureElement parent)
 {
 	Value = value;
 	//Parent = parent;

@@ -25,7 +25,7 @@ public:
 
 	TreeStructureElement(FTransform value, int directionId, int elementId);
 
-	TreeStructureElement(FTransform value, TreeStructureElement *parent);
+	TreeStructureElement(FTransform value, TreeStructureElement parent);
 
 	~TreeStructureElement();
 };

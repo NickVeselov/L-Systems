@@ -8,8 +8,8 @@
  */
 class LSYSTEMS_API TreeStructure
 {
-	TreeStructureElement *root;
-	TreeStructureElement *current;
+	TreeStructureElement root;
+	TreeStructureElement current;
 
 public:
 	TreeStructure();
