@@ -12,7 +12,7 @@ void ALSystemActor::OnConstruction(const FTransform & Transform)
 
 	LS.draw();
 
-	//Tree->init(FTransform(this->GetTransform()));
+	Tree->init(FTransform(this->GetTransform()));
 }
 
 // Sets default values
@@ -52,7 +52,7 @@ UStaticMeshComponent *ALSystemActor::PerformTransformation(FString symbol, UStat
 		Turtle->AddRelativeLocation(NewLocation);
 		//this->GetWorld()->Setwo
 
-		//Tree->AddElement(Turtle->GetRelativeTransform());
+		Tree->AddElement(Turtle->GetRelativeTransform());
 	}
 	else if (symbol == "[")
 	{

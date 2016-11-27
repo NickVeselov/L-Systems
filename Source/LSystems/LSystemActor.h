@@ -13,7 +13,7 @@ class LSYSTEMS_API ALSystemActor : public AActor
 
 		virtual void OnConstruction(const FTransform& Transform) override;
 
-	//TreeStructure *Tree;
+	TreeStructure *Tree;
 
 public:
 

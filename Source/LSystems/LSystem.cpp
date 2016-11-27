@@ -39,15 +39,12 @@ FString LSystem::evolve(int generations)
 	{
 		FString Current = "";
 		TArray<TCHAR> Previous = EvolvedLS.GetCharArray();
-
 		for (int j = 0; j < Previous.Num(); j++)
 		{
 			Current.Append(perform_substitution(Previous[j]));
 		}
-
 		EvolvedLS = Current;
 	}
-
 	return EvolvedLS;
 }
 
