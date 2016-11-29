@@ -19,24 +19,24 @@ public:
 
 	//Number of iterations
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		int	Generations = 3;
+		int	Generations = 1;
 
 	//Letter for the first variable
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString FirstVariable = "X";
+		FString FirstVariable = "A";
 
 	//Letter for the second variable
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString SecondVariable = "F";
+		FString SecondVariable = "B";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString Start = "X";
+		FString Start = "B";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString First_Rule = "F-[[X]+X]+F[+FX]-X";
+		FString First_Rule = "AA";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString Second_Rule = "FF";
+		FString Second_Rule = "AA-[[AB]+AB]+A[+AB]-B";
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = LSystem)
 		FString EvolvedLSystem;
@@ -64,6 +64,11 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	UFUNCTION(BlueprintCallable, Category = Lsystem)
-		UStaticMeshComponent *PerformTransformation(FString symbol, UStaticMeshComponent *Turtle);
+		UStaticMeshComponent *PerformTransformation(FString symbol, UStaticMeshComponent *Turtle, bool DrawDebugSprehes);
 
+	UFUNCTION(BlueprintCallable, Category = LSystem)
+		bool DrawingRequired(FString symbol);
+
+	//UFUNCTION(BlueprintCallable, Category = LSystem)
+	//	TArray<FTransform>
 };

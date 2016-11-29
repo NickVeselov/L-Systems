@@ -37,40 +37,54 @@ void ALSystemActor::Tick(float DeltaTime)
 
 }
 
-UStaticMeshComponent *ALSystemActor::PerformTransformation(FString symbol, UStaticMeshComponent *Turtle)
+UStaticMeshComponent *ALSystemActor::PerformTransformation(FString symbol, UStaticMeshComponent *Turtle, bool DrawDebugSprehes = false)
 {
 	if ((symbol == FirstVariable && FirstVariableRespondsForDrawing) || (symbol == SecondVariable && SecondVariableRespondsForDrawing))
 	{
-		//K2_AddActorLocalRotation()
-		//K2_AddActorWorldRotation(Turtle->RelativeRotation, false, FHitResult(), false);
-		//FRotator R = ;
-		//R.get
-		this->SetActorRelativeRotation(FQuat(Turtle->RelativeRotation));
-		FVector OldLocation = Turtle->GetForwardVector();// .ro
-														 //OldLocation.RotateAngleAxis();
+		this->SetActorRelativeRotation(Turtle->RelativeRotation);
+		FVector OldLocation = Turtle->GetForwardVector();
 		FVector NewLocation = OldLocation*Length;
 		Turtle->AddRelativeLocation(NewLocation);
-		//this->GetWorld()->Setwo
 
-		Tree.AddElement(Turtle->GetRelativeTransform());
+		FTransform FT = Turtle->GetRelativeTransform();
+
+		Tree.AddElement(FT,symbol);
+
+		if (DrawDebugSprehes)
+			DrawDebugSphere(this->GetWorld(), Turtle->K2_GetComponentLocation(), Length / 2.f, 12, FColor(1, 0, 0, 1), false, 10.f);
 	}
 	else if (symbol == "[")
 	{
-		Turtle->AddRelativeRotation(FQuat(0, 0, Angle, 0));
+		Tree.NewBranch(symbol);
 	}
 	else if (symbol == "]")
 	{
-		Turtle->AddRelativeRotation(FQuat(0, 0, -Angle, 0));
+		Turtle->SetRelativeTransform(Tree.GoBack());
 	}
 	else if (symbol == "+")
 	{
-		Turtle->AddRelativeRotation(FQuat(0, 0, Angle, 0));
+		FTransform FT = Turtle->GetRelativeTransform();
+		Turtle->AddRelativeRotation(FRotator(0, Angle, 0));
+		FT = Turtle->GetRelativeTransform();
+
+		Tree.AddElement(FT, symbol);
 	}
 	else if (symbol == "-")
 	{
-		Turtle->AddRelativeRotation(FQuat(0, 0, -Angle, 0));
+		FTransform FT = Turtle->GetRelativeTransform();
+		Turtle->AddRelativeRotation(FRotator(0, -Angle, 0));
+		FT = Turtle->GetRelativeTransform();
+
+		Tree.AddElement(FT, symbol);
 	}
 
 	return Turtle;
+}
+
+bool ALSystemActor::DrawingRequired(FString symbol)
+{
+	if ((symbol == FirstVariable && FirstVariableRespondsForDrawing) || (symbol == SecondVariable && SecondVariableRespondsForDrawing))
+		return true;
+	return false;
 }
 

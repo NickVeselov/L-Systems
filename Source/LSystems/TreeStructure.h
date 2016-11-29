@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TreeStructureElement.h"
+#include "Branch.h"
 #pragma once
 
 /**
@@ -8,14 +8,21 @@
  */
 class LSYSTEMS_API TreeStructure
 {
-	TreeStructureElement root;
-	TreeStructureElement current;
+	int elementNumber = 0;
 
+	TArray<Branch> Hinges;
+	Branch Root;
+
+	TArray<Branch> Branches;
 public:
 	TreeStructure();
 	~TreeStructure();
 
 	void init(FTransform seed);
 
-	void AddElement(FTransform transform);
+	void AddElement(FTransform transform, FString symbol);
+
+	void NewBranch(FString symbol);
+
+	FTransform GoBack();
 };
