@@ -8,11 +8,13 @@ void ALSystemActor::OnConstruction(const FTransform & Transform)
 {
 	LSystem LS;
 	LS.init(FirstVariable, SecondVariable, Start, First_Rule, Second_Rule, Angle, Length);
-	EvolvedLSystem = LS.evolve(Generations);
+	if (Generations > 0)
+	{
+		Clear();
+		EvolvedLSystem = LS.evolve(Generations);
 
-	LS.draw();
-
-	Tree.init(FTransform(this->GetTransform()));
+		CreateTreeStructure();
+	}
 }
 
 // Sets default values
@@ -27,7 +29,6 @@ ALSystemActor::ALSystemActor()
 void ALSystemActor::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
@@ -37,54 +38,77 @@ void ALSystemActor::Tick(float DeltaTime)
 
 }
 
-UStaticMeshComponent *ALSystemActor::PerformTransformation(FString symbol, UStaticMeshComponent *Turtle, bool DrawDebugSprehes = false)
+//Create tree 
+void ALSystemActor::CreateTreeStructure()
 {
-	if ((symbol == FirstVariable && FirstVariableRespondsForDrawing) || (symbol == SecondVariable && SecondVariableRespondsForDrawing))
+	TArray<TCHAR> LS = EvolvedLSystem.GetCharArray();
+
+	Tree.init(TurtlePosition, TurtleDirection,InitialScale,ScaleStep);
+	for (int i = 0; i < LS.Num(); i++)
 	{
-		this->SetActorRelativeRotation(Turtle->RelativeRotation);
-		FVector OldLocation = Turtle->GetForwardVector();
-		FVector NewLocation = OldLocation*Length;
-		Turtle->AddRelativeLocation(NewLocation);
-
-		FTransform FT = Turtle->GetRelativeTransform();
-
-		Tree.AddElement(FT,symbol);
-
-		if (DrawDebugSprehes)
-			DrawDebugSphere(this->GetWorld(), Turtle->K2_GetComponentLocation(), Length / 2.f, 12, FColor(1, 0, 0, 1), false, 10.f);
+		PerformTransformation(LS[i]);
 	}
-	else if (symbol == "[")
-	{
-		Tree.NewBranch(symbol);
-	}
-	else if (symbol == "]")
-	{
-		Turtle->SetRelativeTransform(Tree.GoBack());
-	}
-	else if (symbol == "+")
-	{
-		FTransform FT = Turtle->GetRelativeTransform();
-		Turtle->AddRelativeRotation(FRotator(0, Angle, 0));
-		FT = Turtle->GetRelativeTransform();
-
-		Tree.AddElement(FT, symbol);
-	}
-	else if (symbol == "-")
-	{
-		FTransform FT = Turtle->GetRelativeTransform();
-		Turtle->AddRelativeRotation(FRotator(0, -Angle, 0));
-		FT = Turtle->GetRelativeTransform();
-
-		Tree.AddElement(FT, symbol);
-	}
-
-	return Turtle;
+	Tree.CloseBranch();
 }
 
-bool ALSystemActor::DrawingRequired(FString symbol)
+void ALSystemActor::PerformTransformation(TCHAR symbol)
 {
-	if ((symbol == FirstVariable && FirstVariableRespondsForDrawing) || (symbol == SecondVariable && SecondVariableRespondsForDrawing))
-		return true;
-	return false;
+	TCHAR FV = FirstVariable[0],
+		SV = SecondVariable[0];
+	if ((symbol == FV && FirstVariableRespondsForDrawing) || (symbol == SV && SecondVariableRespondsForDrawing))
+	{
+		TurtlePosition += TurtleDirection*Length;
+		Tree.AddElement(TurtlePosition);
+	}
+	else if (symbol == '[')
+	{
+		Tree.NewBranch(TurtleDirection,TurtlePosition);
+	}
+	else if (symbol == ']')
+	{
+		TurtleDirection = Tree.GetLastDirection();
+		TurtlePosition = Tree.GetLastPosition();
+	}
+	else if (symbol == '+')
+	{
+		TurtleDirection = TurtleDirection.RotateAngleAxis(Angle, FVector(0, 1, 0));
+	}
+	else if (symbol == '-')
+	{
+		TurtleDirection = TurtleDirection.RotateAngleAxis(-Angle, FVector(0, 1, 0));
+	}
+}
+
+
+void ALSystemActor::Clear()
+{
+	TurtlePosition = FVector(1, 1, 1);
+	TurtleDirection = FVector(0, 0, 1);
+	Tree.Clear();
+}
+
+int ALSystemActor::GetNumberOfBranches()
+{
+	return Tree.GetNumberOfBranches();
+}
+
+TArray<FVector> ALSystemActor::GetBranchCoordinates(int i)
+{
+	return Tree.GetBranch(i).BranchParts;
+}
+
+float ALSystemActor::GetStartScale(int i)
+{
+	return Tree.GetBranchStartScale(i);
+}
+
+float ALSystemActor::GetEndScale(int i)
+{
+	return Tree.GetBranchEndScale(i);
+}
+
+FVector ALSystemActor::GetBranchDirection(int i)
+{
+	return Tree.GetBranch(i).Direction;
 }
 

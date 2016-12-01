@@ -12,42 +12,78 @@ TreeStructure::~TreeStructure()
 {
 }
 
-void TreeStructure::init(FTransform seed)
+void TreeStructure::init(FVector ActorLocation, FVector ModelDirection, float StartScale, float ScaleStep)
 {
-	Root = Branch(seed);
-	Hinges.Push(Root);
+	Unfinished_Branches.Add(Branch(ModelDirection, ActorLocation,currentScale));
+	currentScale = StartScale;
+	initialScale = StartScale;
+	scaleStep = ScaleStep;
 }
 
-void TreeStructure::AddElement(FTransform transform, FString symbol)
+//"A" or "B" symbol
+void TreeStructure::AddElement(FVector coordinates)
 {	
-	FString id = symbol + FString::FromInt(elementNumber++);
-
-	Branch NewElement;
-
-	NewElement.Value = transform;
-	NewElement.Parent = &Hinges.Last();
-	NewElement.Id = id;
-
-	Hinges.Last().Children.Add(NewElement);
+	Unfinished_Branches.Last().BranchParts.Add(coordinates);
 }
 
-void TreeStructure::NewBranch(FString symbol)
+//"[" symbol
+void TreeStructure::NewBranch(FVector BranchDirection, FVector BranchOrigin)
 {
-	if (Hinges.Last().Children.Num() != 0)
-		AddElement(Hinges.Last().Children.Last().Value, symbol);
-	else
-		AddElement(Hinges.Last().Value, symbol);
-
-	Branch NewHinge = Hinges.Last().Children.Last();
-	NewHinge.Fictive = true;
-	Hinges.Push(NewHinge);
+	Unfinished_Branches.Add(Branch(BranchDirection, BranchOrigin,currentScale));
+	currentScale -= scaleStep;
 }
 
-FTransform TreeStructure::GoBack()
+FVector TreeStructure::GetLastPosition()
 {
-	if (Hinges.Num() > 1)
+	Branch CurrentBranch = Unfinished_Branches.Last();
+	
+	int branch_id = Unfinished_Branches.Num() - 1;
+
+	for (int i = Unfinished_Branches.Num() - 1; i >= 0; i--)
 	{
-		Hinges.Pop();
+		if (Unfinished_Branches[i].BranchParts.Num() != 0)
+			return Unfinished_Branches[i].BranchParts.Last();
 	}
-	return Hinges.Last().Value;
+
+	return (FVector(0, 0, 0));
+}
+
+FVector TreeStructure::GetLastDirection()
+{
+	CloseBranch();
+
+	return Unfinished_Branches.Last().Direction;
+}
+
+Branch TreeStructure::GetBranch(int i)
+{
+	return Complete_Branches[i];
+}
+
+int TreeStructure::GetNumberOfBranches()
+{
+	return Complete_Branches.Num();
+}
+
+void TreeStructure::CloseBranch()
+{
+	Branch Popped = Unfinished_Branches.Pop();
+	Complete_Branches.Add(Popped);
+	currentScale += scaleStep;
+}
+
+void TreeStructure::Clear()
+{
+	Complete_Branches.Empty();
+	currentScale = initialScale;
+}
+
+float TreeStructure::GetBranchEndScale(int i)
+{
+	return Complete_Branches[i].EndScale;
+}
+
+float TreeStructure::GetBranchStartScale(int i)
+{
+	return Complete_Branches[i].StartScale;
 }

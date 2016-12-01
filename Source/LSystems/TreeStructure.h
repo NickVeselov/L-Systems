@@ -14,15 +14,37 @@ class LSYSTEMS_API TreeStructure
 	Branch Root;
 
 	TArray<Branch> Branches;
+
+
+	TArray<Branch> Unfinished_Branches;
+	TArray<Branch> Complete_Branches;
+
+	float currentScale;
+	float scaleStep;
+	float initialScale;
+
 public:
 	TreeStructure();
 	~TreeStructure();
 
-	void init(FTransform seed);
+	void init(FVector ActorLocation, FVector ModelDirection, float StartScale, float ScaleStep);
 
-	void AddElement(FTransform transform, FString symbol);
+	void AddElement(FVector coordinates);
 
-	void NewBranch(FString symbol);
+	void NewBranch(FVector direction, FVector BranchOrigin);
 
-	FTransform GoBack();
+	FVector GetLastPosition();
+
+	FVector GetLastDirection();
+
+	Branch GetBranch(int i);
+
+	int GetNumberOfBranches();
+
+	void CloseBranch();
+	void Clear();
+
+	float GetBranchStartScale(int i);
+
+	float GetBranchEndScale(int i);
 };

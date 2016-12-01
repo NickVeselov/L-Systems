@@ -5,25 +5,17 @@
 
 Branch::Branch()
 {
-	this->Children.SetNumUninitialized(0);
 }
 
-Branch::Branch(FTransform value)
+Branch::Branch(FVector direction, FVector origin, float scale)
 {
-	this->Value = value;
-	this->Parent = NULL;
-	this->Children.SetNumUninitialized(0);
-	this->Id = "Seed";
-}
-
-Branch::Branch(FTransform value, Branch parent, FString ID)
-{
-	this->Value = value;
-	this->Children.SetNumUninitialized(0);
-	this->Parent = &parent;
-	this->Id = ID;
+	Direction = direction;
+	BranchParts.Add(origin);
+	StartScale = scale;
+	EndScale = scale - 0.1f;
 }
 
 Branch::~Branch()
 {
+
 }

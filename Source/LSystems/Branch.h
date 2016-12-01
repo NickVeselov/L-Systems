@@ -10,21 +10,14 @@ class LSYSTEMS_API Branch
 
 public:
 	//Transform property
-	FTransform Value;
-
-	//Parent
-	Branch *Parent;
-	TArray<FTransform> Elements;
-	FString Id;
-	bool Fictive;
-
-
+	TArray<FVector> BranchParts;
+	FVector Direction;
+	float StartScale;
+	float EndScale;
 
 	Branch();
 
-	Branch(FTransform value);
-
-	Branch(FTransform value, Branch parent, FString ID);
+	Branch(FVector direction, FVector origin, float scale);
 
 	~Branch();
 };
