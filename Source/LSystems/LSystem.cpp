@@ -20,15 +20,18 @@ LSystem::~LSystem()
 {
 }
 
-void LSystem::init(FString A, FString B, FString Start, FString FirstRule, FString SecondRule, float Angle, float Length)
+void LSystem::init(FString FV, FString SV, FString Initiator, FString FR, FString SR)
 {
-	if (!A.IsEmpty() && !B.IsEmpty())
+	//if (!FV.IsEmpty() && !SV.IsEmpty() && !FR.IsEmpty() && !SR.IsEmpty() && Initiator.IsEmpty())
 	{
-		this->A = A[0];	this->B = B[0];
+		A = FV[0];	
+		B = SV[0];
+
+		ARule = FR;
+		BRule = SR;
+
+		Start = Initiator;
 	}
-	this->Start = Start;
-	this->ARule = FirstRule;	this->BRule = SecondRule;
-	this->length = Length;		this->angle = Angle;
 }
 
 FString LSystem::evolve(int generations)

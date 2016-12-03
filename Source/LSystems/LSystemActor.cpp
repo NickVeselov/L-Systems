@@ -6,15 +6,7 @@
 
 void ALSystemActor::OnConstruction(const FTransform & Transform)
 {
-	LSystem LS;
-	LS.init(FirstVariable, SecondVariable, Start, First_Rule, Second_Rule, Angle, Length);
-	if (Generations > 0)
-	{
-		Clear();
-		EvolvedLSystem = LS.evolve(Generations);
-
-		CreateTreeStructure();
-	}
+	Init();
 }
 
 // Sets default values
@@ -53,27 +45,25 @@ void ALSystemActor::CreateTreeStructure()
 
 void ALSystemActor::PerformTransformation(TCHAR symbol)
 {
-	TCHAR FV = FirstVariable[0],
-		SV = SecondVariable[0];
-	if ((symbol == FV && FirstVariableRespondsForDrawing) || (symbol == SV && SecondVariableRespondsForDrawing))
+	if ((symbol == FirstVariable[0] && FirstVariableRespondsForDrawing) || (symbol == SecondVariable[0] && SecondVariableRespondsForDrawing))
 	{
 		TurtlePosition += TurtleDirection*Length;
 		Tree.AddElement(TurtlePosition);
 	}
-	else if (symbol == '[')
+	if (symbol == NewBranchSymbol[0])
 	{
 		Tree.NewBranch(TurtleDirection,TurtlePosition);
 	}
-	else if (symbol == ']')
+	if (symbol == EndBranchSymbol[0])
 	{
 		TurtleDirection = Tree.GetLastDirection();
 		TurtlePosition = Tree.GetLastPosition();
 	}
-	else if (symbol == '+')
+	if (symbol == CWRotationSymbol[0])
 	{
 		TurtleDirection = TurtleDirection.RotateAngleAxis(Angle, FVector(0, 1, 0));
 	}
-	else if (symbol == '-')
+	if (symbol == CCWRotationSymbol[0])
 	{
 		TurtleDirection = TurtleDirection.RotateAngleAxis(-Angle, FVector(0, 1, 0));
 	}
@@ -110,5 +100,18 @@ float ALSystemActor::GetEndScale(int i)
 FVector ALSystemActor::GetBranchDirection(int i)
 {
 	return Tree.GetBranch(i).Direction;
+}
+
+void ALSystemActor::Init()
+{
+	LSystem LS;
+	LS.init(FirstVariable, SecondVariable, Start, First_Rule, Second_Rule);
+	if (Generations > 0)
+	{
+		Clear();
+		EvolvedLSystem = LS.evolve(Generations);
+
+		CreateTreeStructure();
+	}
 }
 

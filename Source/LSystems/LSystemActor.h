@@ -28,44 +28,60 @@ public:
 
 	//Number of iterations
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		int	Generations = 0;
-
-	//Letter for the first variable
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString FirstVariable = "X";
-
-	//Letter for the second variable
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString SecondVariable = "F";
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString Start = "X";
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString First_Rule = "F-[[X]+X]+F[+FX]-X";
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
-		FString Second_Rule = "FF";
+		int	Generations = 3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = LSystem)
 		FString EvolvedLSystem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	//Letter for the first variable
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString FirstVariable = "X";
+
+	//Letter for the second variable
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString SecondVariable = "F";
+
+	//"Right" rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString CWRotationSymbol = "+";
+
+	//"Left" rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString CCWRotationSymbol = "-";
+
+	//New branch symbol
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString NewBranchSymbol = "[";
+
+	//New branch symbol
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemVocabulary)
+		FString EndBranchSymbol = "]";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemRules)
+		FString Start = "X";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemRules)
+		FString First_Rule = "F-[[X]+X]+F[+FX]-X";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemRules)
+		FString Second_Rule = "FF";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemRules)
 		bool FirstVariableRespondsForDrawing = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemRules)
 		bool SecondVariableRespondsForDrawing = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemGraphics)
 		float Angle = 25;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemGraphics)
 		float Length = 40;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemGraphics)
 		float InitialScale = 1.0f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystem)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = LSystemGraphics)
 		float ScaleStep = 0.2f;
 
 	// Sets default values for this actor's properties
@@ -96,4 +112,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = LSystem)
 		FVector GetBranchDirection(int i);
+
+	UFUNCTION(BlueprintCallable, Category = LSystem)
+		void Init();
 };

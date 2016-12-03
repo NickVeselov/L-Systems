@@ -23,7 +23,7 @@ public:
 	~LSystem();
 
 	//set variables
-	void init(FString, FString, FString, FString, FString, float, float);
+	void init(FString FV, FString SV, FString Initiator, FString FR, FString SR);
 
 	//evolve l_system
 	FString evolve(int generations);
