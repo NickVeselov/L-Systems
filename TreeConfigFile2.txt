@@ -1,0 +1,7 @@
+Variables: F X
+Axiom: X
+Rules: F->FF X->F[+X][-X]FX
+Angle: 25
+Length: 20
+Generations: 6
+Drawing: + -

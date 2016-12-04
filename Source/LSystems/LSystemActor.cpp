@@ -45,11 +45,20 @@ void ALSystemActor::CreateTreeStructure()
 
 void ALSystemActor::PerformTransformation(TCHAR symbol)
 {
-	if ((symbol == FirstVariable[0] && FirstVariableRespondsForDrawing) || (symbol == SecondVariable[0] && SecondVariableRespondsForDrawing))
+	if (symbol == FirstVariable[0] && FirstVariableRespondsForDrawing)
 	{
 		TurtlePosition += TurtleDirection*Length;
 		Tree.AddElement(TurtlePosition);
 	}
+	if (SecondVariable != "")
+	{
+		if (symbol == SecondVariable[0] && SecondVariableRespondsForDrawing)
+		{
+			TurtlePosition += TurtleDirection*Length;
+			Tree.AddElement(TurtlePosition);
+		}
+	}
+
 	if (symbol == NewBranchSymbol[0])
 	{
 		Tree.NewBranch(TurtleDirection,TurtlePosition);

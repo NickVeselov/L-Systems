@@ -18,6 +18,7 @@ class LSYSTEMS_API LSystem
 
 	FString perform_substitution(TCHAR);
 
+	bool OneVariable = false;
 public:
 	LSystem();
 	~LSystem();

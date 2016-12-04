@@ -7,7 +7,7 @@ FString LSystem::perform_substitution(TCHAR current_symb)
 {
 	if (current_symb == A)
 		return ARule;
-	else if (current_symb == B)
+	else if (current_symb == B && !OneVariable)
 		return BRule;
 	return FString().AppendChar(current_symb);
 }
@@ -22,16 +22,20 @@ LSystem::~LSystem()
 
 void LSystem::init(FString FV, FString SV, FString Initiator, FString FR, FString SR)
 {
-	//if (!FV.IsEmpty() && !SV.IsEmpty() && !FR.IsEmpty() && !SR.IsEmpty() && Initiator.IsEmpty())
+	A = FV[0];
+	if (SV != "")
 	{
-		A = FV[0];	
 		B = SV[0];
+		OneVariable = false;
+	}
+	else
+		OneVariable = true;
 
-		ARule = FR;
+	ARule = FR;
+	if (!OneVariable)
 		BRule = SR;
 
-		Start = Initiator;
-	}
+	Start = Initiator;
 }
 
 FString LSystem::evolve(int generations)
