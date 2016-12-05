@@ -33,6 +33,11 @@ void TreeStructure::NewBranch(FVector BranchDirection, FVector BranchOrigin)
 	currentScale -= scaleStep;
 }
 
+void TreeStructure::ChangeDirection(FVector NewDirection)
+{
+	Unfinished_Branches.Last().Direction = NewDirection;
+}
+
 FVector TreeStructure::GetLastPosition()
 {
 	Branch CurrentBranch = Unfinished_Branches.Last();

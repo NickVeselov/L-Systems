@@ -2,6 +2,6 @@ Variables: F X
 Axiom: X
 Rules: F->FF X->F[+X]F[-X]+X
 Angle: 25
-Length: 20
+Length: 10
 Generations: 7
 Drawing: + -

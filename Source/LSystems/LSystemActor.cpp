@@ -71,10 +71,12 @@ void ALSystemActor::PerformTransformation(TCHAR symbol)
 	if (symbol == CWRotationSymbol[0])
 	{
 		TurtleDirection = TurtleDirection.RotateAngleAxis(Angle, FVector(0, 1, 0));
+		Tree.ChangeDirection(TurtleDirection);
 	}
 	if (symbol == CCWRotationSymbol[0])
 	{
 		TurtleDirection = TurtleDirection.RotateAngleAxis(-Angle, FVector(0, 1, 0));
+		Tree.ChangeDirection(TurtleDirection);
 	}
 }
 

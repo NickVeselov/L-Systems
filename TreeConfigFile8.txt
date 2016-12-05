@@ -1,0 +1,7 @@
+Variables: 1 0
+Axiom: 0
+Rules: 1->11 0->1[0]0
+Angle: 20
+Length: 20
+Generations: 4
+Drawing: + +

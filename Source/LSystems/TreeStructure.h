@@ -32,6 +32,8 @@ public:
 	void AddElement(FVector coordinates);
 
 	void NewBranch(FVector direction, FVector BranchOrigin);
+	
+	void ChangeDirection(FVector NewDirection);
 
 	FVector GetLastPosition();
 
